@@ -76,14 +76,14 @@ function guardar() {
       text: "Ingrese una fecha válida.",
       icon: "warning",
     });
+  }else{
+    const Prioridadd = prioridad.value==true ? "Alta":"Baja"
+    actividades.value.push({
+      Actividad: actividad.value,
+      Fecha: fecha.value,
+      Prioridadd
+    });
   }
-
-  const Prioridadd = prioridad.value==true ? "Alta":"Baja"
-  actividades.value.push({
-    Actividad: actividad.value,
-    Fecha: fecha.value,
-    Prioridadd
-  });
 }
 
 </script>
