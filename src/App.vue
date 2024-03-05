@@ -40,6 +40,7 @@
 
 
 <script setup>
+import Swal from "sweetalert2";
 
 import { ref } from "vue";
 
@@ -47,6 +48,9 @@ let actividad = ref("")
 let fecha = ref("")
 let prioridad = ref("")
 const Prioridadd = prioridad.value==true ? "Alta":"Baja"
+let fsDate;
+let hoy = new Date()
+hoy.setHours
 
 let actividades = ref([]);
 
@@ -60,6 +64,19 @@ function ordenar(){
 }
 
 function guardar() {
+  fsDate=new Date (fecha.value+"T00:00:00")
+  if (actividad.value === "" || fecha.value === "") {
+    Swal.fire({
+      text: "Por favor, completa todos los campos.",
+      icon: "warning",
+    });
+    return;
+  }else if (fsDate<hoy){
+    Swal.fire({
+      text: "Ingrese una fecha válida.",
+      icon: "warning",
+    });
+  }
 
   const Prioridadd = prioridad.value==true ? "Alta":"Baja"
   actividades.value.push({
@@ -73,62 +90,60 @@ function guardar() {
 
 
 <style scoped>
-
 .padre {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px;
+}
 
-  .parte1, .parte2 {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
+.parte1, .parte2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+}
 
-  input[type="text"],
-  input[type="date"],
-  button,
-  input[type="checkbox"] {
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+input[type="text"],
+input[type="date"],
+button,
+input[type="checkbox"] {
+  padding: 20px;
+  font-size: 22px;
+  border: 3px solid #ccc;
+  border-radius: 10px;
+}
 
-  input[type="checkbox"] {
-    margin-top: 5px;
-  }
+input[type="checkbox"] {
+  margin-top: 15px;
+}
 
-  button {
-    background-color: #4caf50;
-    color: white;
-    cursor: pointer;
-  }
+button {
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  font-size: 22px;
+}
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+}
 
-  th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-  }
+th, td {
+  border: 3px solid #ddd;
+  padding: 24px;
+  text-align: left;
+  font-size: 20px;
+}
 
-  th {
-    background-color: #4caf50;
-    color: white;
-  }
+th {
+  background-color: #4caf50;
+  color: white;
+}
 
-  tbody tr:hover {
-    background-color: #141313;
-  }
-
-
-
+tbody tr:hover {
+  background-color: #141313;
+}
 </style>
