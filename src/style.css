@@ -1,89 +1,82 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-.card {
-  padding: 2em;
-}
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@layer base {
+  html {
+    @apply scroll-smooth antialiased;
   }
-  a:hover {
-    color: #747bff;
+
+  body {
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100;
+    @apply min-h-screen transition-colors duration-300;
   }
-  button {
-    background-color: #f9f9f9;
+
+  ::selection {
+    @apply bg-brand-500/30 text-brand-900 dark:text-brand-100;
   }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-2xl border border-slate-200/80 bg-white/80 shadow-sm backdrop-blur-md;
+    @apply dark:border-slate-800/80 dark:bg-slate-900/80;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm;
+    @apply text-slate-900 placeholder:text-slate-400;
+    @apply transition-all duration-200;
+    @apply focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20;
+    @apply dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 py-2.5;
+    @apply text-sm font-semibold text-white shadow-sm;
+    @apply transition-all duration-200 hover:bg-brand-700 hover:shadow-md;
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+    @apply dark:focus:ring-offset-slate-900 active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5;
+    @apply text-sm font-medium text-slate-700 shadow-sm;
+    @apply transition-all duration-200 hover:bg-slate-50;
+    @apply dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700;
+    @apply active:scale-[0.98];
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5;
+    @apply text-sm font-semibold text-white shadow-sm;
+    @apply transition-all duration-200 hover:bg-red-700 active:scale-[0.98];
+  }
+
+  .btn-icon {
+    @apply inline-flex items-center justify-center rounded-lg p-2;
+    @apply text-slate-500 transition-colors duration-200;
+    @apply hover:bg-slate-100 hover:text-slate-700;
+    @apply dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200;
+  }
+}
+
+/* SweetAlert2 dark mode */
+.dark .swal2-popup {
+  background: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+.dark .swal2-title,
+.dark .swal2-html-container {
+  color: #f1f5f9 !important;
+}
+
+.dark .swal2-input,
+.dark .swal2-textarea {
+  background: #334155 !important;
+  color: #f1f5f9 !important;
+  border-color: #475569 !important;
 }

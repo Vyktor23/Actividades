@@ -1,149 +1,54 @@
-<template>
-  <div class="padre">
+<script setup lang="ts">
+import { ref } from 'vue'
+import AppHeader from '@/components/layout/AppHeader.vue'
+import StatsPanel from '@/components/actividades/StatsPanel.vue'
+import ActivityForm from '@/components/actividades/ActivityForm.vue'
+import ActivityFilters from '@/components/actividades/ActivityFilters.vue'
+import ActivityList from '@/components/actividades/ActivityList.vue'
+import { useActividadesStore } from '@/stores/actividades'
+import type { Actividad } from '@/types/activity'
 
-    <section class="parte1">
-      <input type="text" placeholder="Ingresa la actividad..." v-model="actividad">
-      <input type="date" v-model="fecha">
-    </section>
+const store = useActividadesStore()
+const actividadEditando = ref<Actividad | null>(null)
 
-    <section class="parte2">
-      <button @click="guardar()">Agregar</button>
-      <input type="checkbox" name="prioridad" value="Alta" v-model="prioridad">Alta
-      <button @click="ordenar()">Organizar</button>
-    </section>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Actividad</th>
-          <th>Fecha</th>
-          <th>Prioridad</th>
-          <th>Opciones</th>
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, i) in actividades" :key="i" :style="item.Prioridadd ==='Alta'?{backgroundColor:'Red',color:'white'}:''">
-          <td>{{ item.Actividad }}</td>
-          <td>{{ item.Fecha }}</td>
-          <td>{{ item.Prioridadd }}</td>
-          <td>
-            <button @click="eliminar(i)">❌</button>
-          </td>
-        </tr>
-
-      </tbody>
-
-    </table>
-  </div>
-</template>
-
-
-<script setup>
-import Swal from "sweetalert2";
-
-import { ref } from "vue";
-
-let actividad = ref("")
-let fecha = ref("")
-let prioridad = ref("")
-const Prioridadd = prioridad.value==true ? "Alta":"Baja"
-let fsDate;
-let hoy = new Date()
-hoy.setHours
-
-let actividades = ref([]);
-
-function eliminar(i){
-  actividades.value.splice(i,1)
-}
-
-
-function ordenar(){
-  actividades.value.sort((a,b)=>a.Prioridadd.localeCompare(b.Prioridadd))
-}
-
-function guardar() {
-  fsDate=new Date (fecha.value+"T00:00:00")
-  if (actividad.value === "" || fecha.value === "") {
-    Swal.fire({
-      text: "Por favor, completa todos los campos.",
-      icon: "warning",
-    });
-    return;
-  }else if (fsDate<hoy){
-    Swal.fire({
-      text: "Ingrese una fecha válida.",
-      icon: "warning",
-    });
-  }else{
-    const Prioridadd = prioridad.value==true ? "Alta":"Baja"
-    actividades.value.push({
-      Actividad: actividad.value,
-      Fecha: fecha.value,
-      Prioridadd
-    });
+function editarActividad(id: string) {
+  const actividad = store.obtenerPorId(id)
+  if (actividad) {
+    actividadEditando.value = actividad
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
+function cancelarEdicion() {
+  actividadEditando.value = null
+}
 </script>
 
+<template>
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-50/30 dark:from-slate-950 dark:via-slate-950 dark:to-brand-950/20">
+    <AppHeader />
 
-<style scoped>
-.padre {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 30px;
-}
+    <main class="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:space-y-8">
+      <StatsPanel />
 
-.parte1, .parte2 {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 30px;
-}
+      <div class="grid gap-6 lg:grid-cols-5 lg:gap-8">
+        <div class="lg:col-span-2">
+          <ActivityForm
+            :actividad-editar="actividadEditando"
+            @cancelar-edicion="cancelarEdicion"
+            @guardado="cancelarEdicion"
+          />
+        </div>
 
-input[type="text"],
-input[type="date"],
-button,
-input[type="checkbox"] {
-  padding: 20px;
-  font-size: 22px;
-  border: 3px solid #ccc;
-  border-radius: 10px;
-}
+        <div class="space-y-4 lg:col-span-3">
+          <ActivityFilters />
+          <ActivityList @editar="editarActividad" />
+        </div>
+      </div>
+    </main>
 
-input[type="checkbox"] {
-  margin-top: 15px;
-}
-
-button {
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  font-size: 22px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 30px;
-}
-
-th, td {
-  border: 3px solid #ddd;
-  padding: 24px;
-  text-align: left;
-  font-size: 20px;
-}
-
-th {
-  background-color: #4caf50;
-  color: white;
-}
-
-tbody tr:hover {
-  background-color: #141313;
-}
-</style>
+    <footer class="border-t border-slate-200/80 py-6 text-center text-xs text-slate-400 dark:border-slate-800/80 dark:text-slate-500">
+      Actividades v2.0 — Proyecto Educativo
+    </footer>
+  </div>
+</template>
